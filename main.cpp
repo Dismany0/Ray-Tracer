@@ -62,9 +62,9 @@ void world_2(hittable_list &world){
         }
     }
 
-    world.add(make_shared<sphere>(point3(0.0, 5, 0.0), 5, matte_white));
-    world.add(make_shared<sphere>(point3(0.0, 15, 0.0), 5, blue_metal));
-    world.add(make_shared<sphere>(point3(0.0, 25, 0.0), 5, mat_glass));
+    world.add(make_shared<sphere>(point3(0.0, 5, 0.0), point3(5, 5, 0.0), 5, matte_white));
+    world.add(make_shared<sphere>(point3(0.0, 15, 0.0), point3(5, 5, 0.0), 5, blue_metal));
+    world.add(make_shared<sphere>(point3(0.0, 25, 0.0), point3(5, 5, 0.0), 5, mat_glass));
 }
 
 
