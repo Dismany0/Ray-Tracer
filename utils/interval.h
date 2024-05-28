@@ -10,6 +10,12 @@ class interval { //just define an interval
 
     interval(double _min, double _max) : min(_min), max(_max) {}
 
+    interval(const interval& a, const interval& b) {
+        //new interval from 2 intervals
+        min = a.min <= b.min ? a.min : b.min; //if a.min <= b.min, then a.min else.
+        max = a.max >= b.max ? a.max : b.max;
+    }
+
     bool contains(double x) const {
         return min <= x && x <= max;
     }
