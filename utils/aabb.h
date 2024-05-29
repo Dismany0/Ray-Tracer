@@ -18,7 +18,8 @@ public:
         z = (a[2] <= b[2]) ? interval(a[2], b[2]) : interval(b[2], a[2]);
     }
 
-    aabb(const aabb& box1, const aabb& box2){
+    aabb(const aabb &box1, const aabb &box2)
+    {
         x = interval(box1.x, box2.x);
         y = interval(box1.y, box2.y);
         z = interval(box1.z, box2.z);
@@ -60,11 +61,10 @@ public:
                 if (t0 < ray_t.max)
                     ray_t.max = t0;
             }
+            if (ray_t.max <= ray_t.min) // In the case the intervals do not overlap
+            return false;
         }
-
-        if (ray_t.max <= ray_t.min) //In the case the intervals do not overlap
-            return false; 
+        return true; // If the intervals overlap on all 3 axis, hit
     }
-    return true; //If the intervals overlap on all 3 axis, hit
 };
 #endif

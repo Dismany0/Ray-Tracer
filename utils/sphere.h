@@ -16,7 +16,7 @@ public:
     bbox = aabb(center1 - rvec, center1 + rvec);
   }
 
-  sphere(point3 _center1, point3 _centre2, double _radius, shared_ptr<material> _material)
+  sphere(point3 _center1, point3 _center2, double _radius, shared_ptr<material> _material)
       : center1(_center1), radius(fmax(0, _radius)), mat(_material), is_moving(true)
   {
     //Moving sphere bounding box just take the start and end points, whole box
@@ -25,7 +25,7 @@ public:
     aabb box2(_center2 - rvec, _center2 + rvec);
     bbox = aabb(box1, box2);
 
-    center_vec = _centre2 - _center1;
+    center_vec = _center2 - _center1;
   }
 
   // Define a hit function for a sphere
