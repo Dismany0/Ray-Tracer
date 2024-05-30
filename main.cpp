@@ -1,6 +1,7 @@
 #include <iostream>
 #include "utils\rtweekend.h"
 
+#include "utils\bvh.h"
 #include "utils\camera.h"
 #include "utils\hittable_list.h"
 #include "utils\sphere.h"
@@ -74,6 +75,7 @@ int main() {
 
     // I am loading the world through a function here
     world_2(world);
+    world = hittable_list(make_shared<bvh_node>(world));
     
 
     // Camera
