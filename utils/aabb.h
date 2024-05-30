@@ -62,16 +62,22 @@ public:
                     ray_t.max = t0;
             }
             if (ray_t.max <= ray_t.min) // In the case the intervals do not overlap
-            return false;
+                return false;
         }
         return true; // If the intervals overlap on all 3 axis, hit
     }
 
-    int longest_axis() const {
+    int longest_axis() const
+    {
 
-        if(x.size() > y.size())
-            return x.size() > z.size() ? 0 : 2; //return 0 if x > z, otherwise 2
-        else return y.size() > z.size ? 1 : 2; //return 1 if y > z, otherwise 2
+        if (x.size() > y.size())
+            return x.size() > z.size() ? 0 : 2; // return 0 if x > z, otherwise 2
+        else
+            return y.size() > z.size ? 1 : 2; // return 1 if y > z, otherwise 2
     }
 };
+
+const aabb aabb::empty = aabb(interval::empty, interval::empty, interval::empty);
+const aabb aabb::universe = aabb(interval::universe, interval::universe, interval::universe);
+
 #endif
