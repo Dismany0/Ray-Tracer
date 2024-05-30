@@ -66,5 +66,12 @@ public:
         }
         return true; // If the intervals overlap on all 3 axis, hit
     }
+
+    int longest_axis() const {
+
+        if(x.size() > y.size())
+            return x.size() > z.size() ? 0 : 2; //return 0 if x > z, otherwise 2
+        else return y.size() > z.size ? 1 : 2; //return 1 if y > z, otherwise 2
+    }
 };
 #endif
