@@ -73,11 +73,10 @@ public:
         if (x.size() > y.size())
             return x.size() > z.size() ? 0 : 2; // return 0 if x > z, otherwise 2
         else
-            return y.size() > z.size ? 1 : 2; // return 1 if y > z, otherwise 2
+            return y.size() > z.size() ? 1 : 2; // return 1 if y > z, otherwise 2
     }
+    static const aabb empty, universe;
 };
-
 const aabb aabb::empty = aabb(interval::empty, interval::empty, interval::empty);
 const aabb aabb::universe = aabb(interval::universe, interval::universe, interval::universe);
-
 #endif

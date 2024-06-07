@@ -7,6 +7,9 @@
 #include "utils\sphere.h"
 #include "utils\color.h"
 #include "utils\material.h"
+#include "utils\interval.h"
+#include "utils\aabb.h"
+
 
 void world_1(hittable_list &world){
     auto material_ground = make_shared<lambertian>(color(0.2, 0.6, 0.2));

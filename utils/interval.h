@@ -16,6 +16,10 @@ class interval { //just define an interval
         max = a.max >= b.max ? a.max : b.max;
     }
 
+    double size() const {
+        return max - min;
+    }
+
     bool contains(double x) const {
         return min <= x && x <= max;
     }
@@ -38,7 +42,7 @@ class interval { //just define an interval
     static const interval empty, universe;
 };
 // Define the empty and universe intervals
-const static interval empty   (+infinity, -infinity);
-const static interval universe(-infinity, +infinity);
+const interval interval::empty    = interval(+infinity, -infinity);
+const interval interval::universe = interval(-infinity, +infinity);
 
 #endif
