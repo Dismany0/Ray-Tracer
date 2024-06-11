@@ -9,6 +9,7 @@
 #include "utils\material.h"
 #include "utils\interval.h"
 #include "utils\aabb.h"
+#include "utils\texture.h"
 
 
 void world_1(hittable_list &world){
@@ -26,7 +27,10 @@ void world_1(hittable_list &world){
 
 void world_2(hittable_list &world){
     auto material_ground = make_shared<lambertian>(color(0.1, 0.1, 0.1));
-    world.add(make_shared<sphere>(point3(0.0, -1000.0, -1.0), 1000.0, material_ground));
+    auto checker_ground = make_shared<checker_texture>(0.32, color(.1,.1,.1), color(.9, .9, .9));
+    auto checker = make_shared<lambertian>(checker_ground);
+    
+    world.add(make_shared<sphere>(point3(0.0, -1000.0, -1.0), 1000.0, checker));
 
     auto matte_white = make_shared<lambertian>(color(0.5, 0.2, 0.2));
     auto mat_glass   = make_shared<dielectric>(1.7);

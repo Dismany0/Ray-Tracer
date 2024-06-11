@@ -3,6 +3,8 @@
 
 #include "rtweekend.h"
 
+#include "texture.h"
+
 class hit_record;
 
 class material { //abstract material class, rays scatter off of materials differently to get different effects
