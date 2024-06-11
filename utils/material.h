@@ -15,7 +15,11 @@ class material { //abstract material class, rays scatter off of materials differ
 
 class lambertian : public material { // This is a diffuse or "matte" material, uses lambertian reflectance to achieve this affect
   public:
-    lambertian(const color& a) : albedo(a) {}
+    // Change to make a solid colour texture rather than a colour
+    // lambertian(const color& a) : albedo(a) {}
+
+    lambertian(const color& albedo) : tex(make_shared<solid_color>(albedo)) {}
+    lambertian(shared_ptr<texture> tex) : tex(tex) {}
 
     bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
     const override {
@@ -27,12 +31,12 @@ class lambertian : public material { // This is a diffuse or "matte" material, u
             scatter_direction = rec.normal;
 
         scattered = ray(rec.p, scatter_direction, r_in.time());
-        attenuation = albedo;
+        attenuation = tex->value(rec.u, rec.v, rec.p);
         return true;
     }
 
   private:
-    color albedo;
+    shared_ptr<texture> tex;
 };
 
 class metal : public material {// metals are reflective, and have a fuzziness factor

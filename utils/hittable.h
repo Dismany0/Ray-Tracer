@@ -12,6 +12,8 @@ class hit_record { //This is a record of a hit
     point3 p;
     vec3 normal;
     double t;
+    double u;
+    double v;
     shared_ptr<material> mat;
 
     bool front_face; //This is used to determine if the ray comes from the outside or the inside of the object
