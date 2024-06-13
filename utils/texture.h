@@ -50,6 +50,6 @@ class checker_texture : public texture {
     double inv_scale;
     shared_ptr<texture> even;
     shared_ptr<texture> odd;
-}
+};
 
 #endif

@@ -12,22 +12,50 @@
 #include "utils\texture.h"
 
 
-void world_1(hittable_list &world){
+void world_1(){
+    // Make World
+    hittable_list world;
+    
+    // Materials
     auto material_ground = make_shared<lambertian>(color(0.2, 0.6, 0.2));
     auto material_center = make_shared<lambertian>(color(0.5, 0.1, 0.2));
     auto material_left   = make_shared<dielectric>(1.7);
     auto material_right = make_shared<metal>(color(0.7, 0.2, 0.7), 0.05);
-    
+
+    // Objects
     world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
     world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
     world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+    //Camera
+    world = hittable_list(make_shared<bvh_node>(world));
+    camera cam;
+
+    cam.aspect_ratio = 16.0 / 9.0;
+    cam.image_width = 2000;
+    cam.samples_per_pixel = 500;
+    cam.max_depth = 25;
+
+    cam.vfov     = 70;
+    cam.lookfrom = point3(11,16,14);
+    cam.lookat   = point3(0,12,0);
+    cam.vup      = vec3(0,1,0);
+
+    cam.defocus_angle = 0.0;
+    cam.focus_dist    = (cam.lookfrom - cam.lookat).length();
+
+    cam.render(world);
 }
 
-void world_2(hittable_list &world){
+void world_2(){
+    // Make World
+    hittable_list world;
+
+    // Materials
     auto material_ground = make_shared<lambertian>(color(0.1, 0.1, 0.1));
-    auto checker_ground = make_shared<checker_texture>(0.32, color(.1,.1,.1), color(.9, .9, .9));
+    auto checker_ground = make_shared<checker_texture>(1, color(.1,.1,.1), color(.9, .9, .9));
     auto checker = make_shared<lambertian>(checker_ground);
     
     world.add(make_shared<sphere>(point3(0.0, -1000.0, -1.0), 1000.0, checker));
@@ -37,7 +65,7 @@ void world_2(hittable_list &world){
     auto blue_metal = make_shared<metal>(color(0.7, 0.7, 0.8), 0.05);
 
 
-
+    // Objects
     for(double y = 0.0; y <30; ++y){
         for (double rad = 7.0; rad < 10.0; ++rad){
             double mat = random_double();
@@ -77,24 +105,14 @@ void world_2(hittable_list &world){
     world.add(make_shared<sphere>(point3(0.0, 5, 0.0), 5, matte_white));
     world.add(make_shared<sphere>(point3(0.0, 15, 0.0), 5, blue_metal));
     world.add(make_shared<sphere>(point3(0.0, 25, 0.0), 5, mat_glass));
-}
-
-
-int main() {
-    // World
-    hittable_list world;
-
-    // I am loading the world through a function here
-    world_2(world);
-    world = hittable_list(make_shared<bvh_node>(world));
-    
 
     // Camera
+    world = hittable_list(make_shared<bvh_node>(world));
     camera cam;
 
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 800;
-    cam.samples_per_pixel = 200;
+    cam.image_width = 2000;
+    cam.samples_per_pixel = 50;
     cam.max_depth = 25;
 
     cam.vfov     = 70;
@@ -105,7 +123,37 @@ int main() {
     cam.defocus_angle = 0.0;
     cam.focus_dist    = (cam.lookfrom - cam.lookat).length();
 
+    cam.render(world);
+}
+
+void world_2_checkered_spheres(){
+    hittable_list world;
+
+    auto checker = make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
+
+    world.add(make_shared<sphere>(point3(0,-10, 0), 10, make_shared<lambertian>(checker)));
+    world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
+
+    camera cam;
+
+    cam.aspect_ratio      = 16.0 / 9.0;
+    cam.image_width       = 1000;
+    cam.samples_per_pixel = 100;
+    cam.max_depth         = 50;
+
+    cam.vfov     = 20;
+    cam.lookfrom = point3(13,2,3);
+    cam.lookat   = point3(0,0,0);
+    cam.vup      = vec3(0,1,0);
+
+    cam.defocus_angle = 0;
 
     cam.render(world);
+}
 
+int main() {
+    // world_1();
+    // world_2();
+    world_2_checkered_spheres();
+    return 0;
 }
