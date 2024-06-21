@@ -127,12 +127,13 @@ void world_2(){
 }
 
 void world_2_checkered_spheres(){
+    auto earth_texture = make_shared<image_texture>("earthmap.jpg");
     hittable_list world;
 
     auto checker = make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
 
-    world.add(make_shared<sphere>(point3(0,-10, 0), 10, make_shared<lambertian>(checker)));
-    world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
+    world.add(make_shared<sphere>(point3(0,-10, 0), 10, make_shared<lambertian>(earth_texture)));
+    world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(earth_texture)));
 
     camera cam;
 
@@ -159,8 +160,8 @@ void earth() {
     camera cam;
 
     cam.aspect_ratio      = 16.0 / 9.0;
-    cam.image_width       = 400;
-    cam.samples_per_pixel = 100;
+    cam.image_width       = 1200;
+    cam.samples_per_pixel = 200;
     cam.max_depth         = 50;
 
     cam.vfov     = 20;
@@ -175,7 +176,7 @@ void earth() {
 int main() {
     // world_1();
     // world_2();
-    // world_2_checkered_spheres();
-    earth();
+    world_2_checkered_spheres();
+    // earth();
     return 0;
 }
