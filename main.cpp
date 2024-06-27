@@ -136,8 +136,8 @@ void world_2_checkered_spheres()
 
     auto checker = make_shared<checker_texture>(0.32, color(.2, .3, .1), color(.9, .9, .9));
 
-    world.add(make_shared<sphere>(point3(0, -10, 0), 10, make_shared<lambertian>(earth_texture)));
-    world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(earth_texture)));
+    world.add(make_shared<sphere>(point3(0, -10, 0), 10, make_shared<lambertian>(checker)));
+    world.add(make_shared<sphere>(point3(0, 10, 0), 10, make_shared<lambertian>(checker)));
 
     camera cam;
 
