@@ -30,8 +30,8 @@ public:
     double noise(const point3 &p) const
     {
         auto i = int(4 * p.x()) & 255;
-        auto j = int(4 * p.x()) & 255;
-        auto k = int(4 * p.x()) & 255;
+        auto j = int(4 * p.y()) & 255;
+        auto k = int(4 * p.z()) & 255;
 
         return randfloat[perm_x[i] ^ perm_y[j] ^ perm_z[k]];
     }

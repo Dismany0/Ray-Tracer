@@ -11,6 +11,7 @@
 #include "utils\aabb.h"
 #include "utils\texture.h"
 
+
 void world_1()
 {
     // Make World
@@ -190,7 +191,7 @@ void perlin_spheres()
     camera cam;
 
     cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 400;
+    cam.image_width = 800;
     cam.samples_per_pixel = 100;
     cam.max_depth = 50;
 
