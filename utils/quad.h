@@ -39,9 +39,16 @@ class quad : public hittable {
             if (!ray_t.contains(t))
                 return false;
 
-            //otherwise hits the plane
+            //otherwise hits the plane, check for shape intersection
             auto intersection = r.at(t);
+            vec3 planar_hitpt_vector = intersection - Q;
+            auto alpha = dot(w, cross(planar_hitpt_vector, v));
+            auto beta = dot(w, cross(u, planar_hitpt_vector));
 
+            if (!is_interior(alpha, beta, rec))
+                return false;
+
+            // Hit shape, get rec
             rec.t = t;
             rec.p = intersection;
             rec.mat = mat;
@@ -51,6 +58,19 @@ class quad : public hittable {
 
         return false; 
     }
+
+    virtual bool is_interior(double a, double b, hit_record& rec) const {
+        internal unit_interval = interval(0, 1);
+        // return if hit lands, false otherwise
+
+        if (!unit_interval.contains(a) || !unit_interval.contains(b))
+            return false;
+
+        rec.u = a;
+        rec.v = b;
+        return true;
+    }
+    
 
     private:
     point3 Q;
