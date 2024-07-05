@@ -10,7 +10,7 @@
 #include "utils\interval.h"
 #include "utils\aabb.h"
 #include "utils\texture.h"
-#includes "utils\quad.h"
+#include "utils\quad.h"
 
 
 void world_1()

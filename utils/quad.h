@@ -6,7 +6,7 @@
 
 class quad : public hittable {
     public:
-    quad(const point3& Q, const vec3& u, const vec3& v, sared_ptr<material> mat) :
+    quad(const point3& Q, const vec3& u, const vec3& v, shared_ptr<material> mat) :
     Q(Q), u(u), v(v), mat(mat)
     {
 
@@ -60,7 +60,7 @@ class quad : public hittable {
     }
 
     virtual bool is_interior(double a, double b, hit_record& rec) const {
-        internal unit_interval = interval(0, 1);
+        interval unit_interval = interval(0, 1);
         // return if hit lands, false otherwise
 
         if (!unit_interval.contains(a) || !unit_interval.contains(b))
@@ -83,67 +83,67 @@ class quad : public hittable {
 
 };
 
-class tri : public quad {
-  public:
-    tri(const point3& o, const vec3& aa, const vec3& ab, shared_ptr<material> m)
-      : quad(o, aa, ab, m)
-    {}
+// class tri : public quad {
+//   public:
+//     tri(const point3& o, const vec3& aa, const vec3& ab, shared_ptr<material> m)
+//       : quad(o, aa, ab, m)
+//     {}
 
-    virtual bool hit_ab(double a, double b, hit_record& rec) const override {
-        if ((a < 0) || (b < 0) || (a + b > 1))
-            return false;
+//     virtual bool hit_ab(double a, double b, hit_record& rec) const override {
+//         if ((a < 0) || (b < 0) || (a + b > 1))
+//             return false;
 
-        rec.u = a;
-        rec.v = b;
-        return true;
-    }
-};
+//         rec.u = a;
+//         rec.v = b;
+//         return true;
+//     }
+// };
 
-class ellipse : public quad {
-  public:
-    ellipse(
-        const point3& center, const vec3& side_A, const vec3& side_B, shared_ptr<material> m
-    ) : quad(center, side_A, side_B, m)
-    {}
+// class ellipse : public quad {
+//   public:
+//     ellipse(
+//         const point3& center, const vec3& side_A, const vec3& side_B, shared_ptr<material> m
+//     ) : quad(center, side_A, side_B, m)
+//     {}
 
-    virtual void set_bounding_box() override {
-        bbox = aabb(plane_origin - axis_A - axis_B, plane_origin + axis_A + axis_B).pad();
-    }
+//     virtual void set_bounding_box() override {
+//         bbox = aabb(plane_origin - axis_A - axis_B, plane_origin + axis_A + axis_B).pad();
+//     }
 
-    virtual bool hit_ab(double a, double b, hit_record& rec) const override {
-        if ((a*a + b*b) > 1)
-            return false;
+//     virtual bool hit_ab(double a, double b, hit_record& rec) const override {
+//         if ((a*a + b*b) > 1)
+//             return false;
 
-        rec.u = a/2 + 0.5;
-        rec.v = b/2 + 0.5;
-        return true;
-    }
-};
+//         rec.u = a/2 + 0.5;
+//         rec.v = b/2 + 0.5;
+//         return true;
+//     }
+// };
 
-class annulus : public quad {
-  public:
-    annulus(
-        const point3& center, const vec3& side_A, const vec3& side_B, double _inner,
-        shared_ptr<material> m)
-      : quad(center, side_A, side_B, m), inner(_inner)
-    {}
+// class annulus : public quad {
+//   public:
+//     annulus(
+//         const point3& center, const vec3& side_A, const vec3& side_B, double _inner,
+//         shared_ptr<material> m)
+//       : quad(center, side_A, side_B, m), inner(_inner)
+//     {}
 
-    virtual void set_bounding_box() override {
-        bbox = aabb(plane_origin - axis_A - axis_B, plane_origin + axis_A + axis_B).pad();
-    }
+//     virtual void set_bounding_box() override {
+//         bbox = aabb(plane_origin - axis_A - axis_B, plane_origin + axis_A + axis_B).pad();
+//     }
 
-    virtual bool hit_ab(double a, double b, hit_record& rec) const override {
-        auto center_dist = sqrt(a*a + b*b);
-        if ((center_dist < inner) || (center_dist > 1))
-            return false;
+//     virtual bool hit_ab(double a, double b, hit_record& rec) const override {
+//         auto center_dist = sqrt(a*a + b*b);
+//         if ((center_dist < inner) || (center_dist > 1))
+//             return false;
 
-        rec.u = a/2 + 0.5;
-        rec.v = b/2 + 0.5;
-        return true;
-    }
+//         rec.u = a/2 + 0.5;
+//         rec.v = b/2 + 0.5;
+//         return true;
+//     }
 
-  private:
-    double inner;
-};
+//   private:
+//     double inner;
+// };
 
 #endif
