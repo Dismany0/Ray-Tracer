@@ -11,12 +11,15 @@ class material { //abstract material class, rays scatter off of materials differ
   public:
     virtual ~material() = default;
 
-    virtual color emitted(double u, double v, const point3& p){
+    virtual color emitted(double u, double v, const point3& p) const {
       return color(0, 0, 0);
     }
     
     virtual bool scatter(
-        const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const = 0;
+        const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+    ) const {
+        return false;
+    }
 };
 
 class lambertian : public material { // This is a diffuse or "matte" material, uses lambertian reflectance to achieve this affect
@@ -111,6 +114,6 @@ class diffuse_light : public material {
   }
   private:
   shared_ptr<texture> tex;
-}
+};
 
 #endif
