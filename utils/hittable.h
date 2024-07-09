@@ -35,4 +35,30 @@ class hittable { //This is an abstract class for all hittable objects
     virtual aabb bounding_box() const = 0;
 };
 
+class translate: public hittable {
+  public:
+  translate(shared_ptr<hittable>object, const vec3& offset) : object(object), offset(offset) {
+    bbox = object->bounding_box() + offset;
+  }
+
+  bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
+    //move ray backwards by offset
+    ray offset_r(r.origin() - offset, r.direction(), r.time());
+
+    //find intersections
+    if (!object->hit(offset_r, ray_t, rec))
+      return false;
+
+    //move forward by offset if intersection
+    rec.p += offset;
+  }
+
+  aabb bounding_box() const override { return bbox; }
+
+  private:
+  shared_ptr<hittable> object;
+  vec3 offset;
+  aabb bbox;
+}
+
 #endif
