@@ -51,6 +51,7 @@ class translate: public hittable {
 
     //move forward by offset if intersection
     rec.p += offset;
+    return true;
   }
 
   aabb bounding_box() const override { return bbox; }
@@ -59,6 +60,6 @@ class translate: public hittable {
   shared_ptr<hittable> object;
   vec3 offset;
   aabb bbox;
-}
+};
 
 #endif
