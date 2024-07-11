@@ -62,4 +62,25 @@ class translate: public hittable {
   aabb bbox;
 };
 
+class rotate_y : public hittable {
+  public:
+
+  private:
+
+};
+
+class rotate_x : public rotate_y {
+  public:
+
+  private:
+
+};
+
+class rotate_z : public rotate_y {
+  public:
+
+  private:
+
+};
+
 #endif
