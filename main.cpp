@@ -304,8 +304,8 @@ void cornell_box() {
 
     cam.aspect_ratio      = 1.0;
     cam.image_width       = 600;
-    cam.samples_per_pixel = 1000;
-    cam.max_depth         = 120;
+    cam.samples_per_pixel = 64;
+    cam.max_depth         = 50;
     cam.background        = color(0,0,0);
 
     cam.vfov     = 40;
@@ -451,8 +451,8 @@ int main()
     // perlin_spheres();
     // quads();
     // simple_light();
-    // cornell_box();
+    cornell_box();
     // cornell_smoke();
-    final_scene(800, 1000, 50);
+    // final_scene(800, 1000, 50);
     return 0;
 }

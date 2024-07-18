@@ -43,10 +43,21 @@ public:
             {
 
                 color pixel_color(0, 0, 0); //Get the color of the pixel
-                for (int sample = 0; sample < samples_per_pixel; ++sample){
-                    ray r = get_ray(i,j);
-                    pixel_color += ray_color(r, max_depth, world);
+
+                //stratify the ray location
+                for(int s_j = 0; s-j < sqrt_spp; s_j++){
+                    for (int s_i = 0; s_i < sqrt_spp; s_i++) {
+                        ray r = get_ray(i, j, s_i, s_j);
+                        pixel_color += ray_color(r, max_depth, world);
+                    }
                 }
+
+                //Non stratified
+                // for (int sample = 0; sample < samples_per_pixel; ++sample){
+                //     ray r = get_ray(i,j);
+                //     pixel_color += ray_color(r, max_depth, world);
+                // }
+
                 write_color(std::cout, pixel_color, samples_per_pixel);
             }
         }
@@ -56,6 +67,9 @@ public:
 
 private:
     int image_height;
+    double pixel_samples_scale;
+    int    sqrt_spp;             // Square root of number of samples per pixel
+    double recip_sqrt_spp;       // 1 / sqrt_spp
     point3 center;
     point3 pixel00_loc;
     vec3 pixel_delta_u;
@@ -70,6 +84,10 @@ private:
         // Calculate the camera basis vectors.
         image_height = static_cast<int>(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
+
+        sqrt_spp = int(sqrt(samples_per_pixel));
+        pixel_samples_scale = 1.0 / (sqrt_spp * sqrt_spp);
+        recip_sqrt_spp = 1.0 / sqrt_spp;
 
         center = lookfrom;
 
@@ -126,7 +144,10 @@ private:
     }
 
     ray get_ray(int i, int j) const { // i is the horizontal pixel index, j is the vertical pixel index
-        auto pixel_center = pixel00_loc + i * pixel_delta_u + j * pixel_delta_v;
+        // Construct a camera ray originating from the defocus disk and directed at a randomly
+        // sampled point around the pixel location i, j for stratified sample square s_i, s_j.
+
+        auto offset = sample_square_stratified(s_i, s_j);
         auto pixel_sample = pixel_center + pixel_sample_square();
 
         // ray origin is center unless we have a defocus angle
@@ -137,6 +158,16 @@ private:
         auto ray_time = random_double();
 
         return ray(ray_origin, ray_direction, ray_time);
+    }
+
+    vec3 sample_square_stratified(int s_i, int s_j) const {
+        // Returns the vector to a random point in the square sub-pixel specified by grid
+        // indices s_i and s_j, for an idealized unit square pixel [-.5,-.5] to [+.5,+.5].
+
+        auto px = ((s_i + random_double()) * recip_sqrt_spp) - 0.5;
+        auto py = ((s_j + random_double()) * recip_sqrt_spp) - 0.5;
+
+        return vec3(px, py, 0);
     }
 
     vec3 pixel_sample_square() const {
